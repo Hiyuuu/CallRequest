@@ -4,7 +4,13 @@ import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import java.io.IOException
 
-
+/**
+ *  REST APIのテストをするラッパー
+ *
+ *  @author HIYU
+ *  @changeLog
+ *    ➡ V1.0 - クラス作成
+ */
 class CallRecieve(val port: Int) {
 
     private var handle : (MockWebServer, RecordedRequest) -> MockResponse = { _, _ -> MockResponse() }

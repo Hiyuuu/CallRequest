@@ -5,5 +5,4 @@ fun main(args: Array<String>) {
     val result = CallRequest("http://localhost:80").connectString()
     println(result)
 
-
 }

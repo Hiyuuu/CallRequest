@@ -16,4 +16,5 @@ jobs:
       - name: Publish package
         run: gradle publishAllPublicationsToGitHubPackagesRepository
         env:
+          GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

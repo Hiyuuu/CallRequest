@@ -9,7 +9,7 @@ plugins {
 publishing {
     repositories {
         maven {
-            name = "GitHubPackages"
+            name = "CallRequest"
             url = "https://maven.pkg.github.com/Hiyuuu/CallRequest"
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
@@ -19,6 +19,7 @@ publishing {
     }
     publications {
         gpr(MavenPublication) {
+            artifactId = archivesBaseName
             from(components.java)
         }
     }

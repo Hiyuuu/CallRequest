@@ -13,7 +13,7 @@ shadowJar {
     minimize() {
         include 'com.jayway.jsonpath.*'
     }
-    archiveName = "${buildDir}/libs/${this.name}-${this.version}.jar"
+    archiveName = "${buildDir}/libs/${this.name.toLowerCase()}-${this.version}.jar"
 }
 
 publishing {
@@ -31,7 +31,7 @@ publishing {
         gpr(MavenPublication) {
             artifactId = "callrequest"
             from(components.java)
-            artifact("$buildDir/libs/${this.name}-${this.version}.jar")
+            artifact("$buildDir/libs/${this.name.toLowerCase()}-${this.version}.jar")
         }
     }
 }

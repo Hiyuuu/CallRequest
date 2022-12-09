@@ -27,6 +27,7 @@ import javax.print.DocFlavor.STRING
  *           - コード最適化
  *    ➡ V1.2 - BodyリクエストをCLOSEするようにした
  *    ➡ V1.3 - 認証付きProxyをサポート
+ *    ➡ V1.4 - JsonPath解析に対応
  */
 class CallRequest(
     var URL: String? = null,

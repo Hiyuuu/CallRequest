@@ -9,13 +9,6 @@ plugins {
 version '1.0'
 group 'com.gmail.hiyu1576'
 
-shadowJar {
-    minimize() {
-//        include 'com.jayway.jsonpath.*'
-    }
-//    archiveName = "${buildDir}/libs/${this.name.toLowerCase()}-${this.version}.jar"
-}
-
 publishing {
     repositories {
         maven {
@@ -32,7 +25,6 @@ publishing {
             artifactId = "callrequest"
             artifact shadowJar
 //            from(components.java)
-//            artifact("$buildDir/libs/${this.name.toLowerCase()}-${this.version}.jar")
         }
     }
 }
@@ -57,4 +49,5 @@ dependencies {
     compileOnly fileTree(dir: './library/compile', include: ['*.jar'])
 }
 
+shadowJar.minimize()
 compileKotlin.kotlinOptions.jvmTarget = "1.8"

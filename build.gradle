@@ -8,6 +8,13 @@ plugins {
 
 version '1.0'
 group 'com.gmail.hiyu1576'
+jar.manifest.attributes "Main-Class": "CallTestKt"
+
+compileKotlin.kotlinOptions.jvmTarget = "1.8"
+shadowJar {
+    minimize()
+    classifier = ''
+}
 
 publishing {
     repositories {
@@ -29,8 +36,6 @@ publishing {
     }
 }
 
-jar.manifest.attributes "Main-Class": "CallTestKt"
-
 repositories {
     mavenCentral()
 }
@@ -48,6 +53,3 @@ dependencies {
 
     compileOnly fileTree(dir: './library/compile', include: ['*.jar'])
 }
-
-shadowJar.minimize()
-compileKotlin.kotlinOptions.jvmTarget = "1.8"

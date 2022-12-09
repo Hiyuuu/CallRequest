@@ -30,7 +30,7 @@ publishing {
     }
     publications {
         gpr(MavenPublication) {
-            //artifactId = "callrequest"
+            artifactId = "callrequest"
 //            from(components.java)
             artifact shadowJar
 //            artifact("$buildDir/libs/${this.name.toLowerCase()}-${this.version}.jar")

@@ -27,7 +27,7 @@ publishing {
     }
     publications {
         gpr(MavenPublication) {
-            // artifactId = "callrequest"
+             artifactId = "callrequest"
             artifact shadowJar
 //            from(components.java)
         }

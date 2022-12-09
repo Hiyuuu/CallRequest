@@ -6,13 +6,12 @@ plugins {
 
 }
 
-version '2.0'
+version '3.0'
 group 'com.gmail.hiyu1576'
 jar.manifest.attributes "Main-Class": "CallTestKt"
 
 compileKotlin.kotlinOptions.jvmTarget = "1.8"
 shadowJar {
-    minimize()
     classifier = ''
 }
 

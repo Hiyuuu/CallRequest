@@ -1,8 +1,9 @@
+package com.gmail.hiyu1576
+
 import net.minidev.json.JSONArray
 import okhttp3.mockwebserver.MockResponse
 import java.io.File
 import java.io.FileNotFoundException
-
 fun main(args: Array<String>) {
 
     // Json例 取得

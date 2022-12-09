@@ -1,8 +1,8 @@
+package com.gmail.hiyu1576
+
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.LoggerContext
 import com.jayway.jsonpath.JsonPath
-import com.jayway.jsonpath.spi.json.GsonJsonProvider
-import net.minidev.json.JSONArray
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -10,12 +10,10 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
-import java.lang.ClassCastException
 import java.lang.NullPointerException
 import java.net.InetSocketAddress
 import java.net.Proxy
 import java.util.concurrent.TimeUnit
-import javax.print.DocFlavor.STRING
 
 /**
  *  REST APIにアクセスするラッパー
@@ -29,7 +27,7 @@ import javax.print.DocFlavor.STRING
  *    ➡ V1.3 - 認証付きProxyをサポート
  *    ➡ V1.4 - JsonPath解析に対応
  */
-class CallRequest(
+open class CallRequest(
     var URL: String? = null,
     var method: RequestMethod = RequestMethod.GET,
     var body: String = "",

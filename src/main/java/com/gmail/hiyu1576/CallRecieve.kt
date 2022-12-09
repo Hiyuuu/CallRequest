@@ -1,3 +1,5 @@
+package com.gmail.hiyu1576
+
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -11,7 +13,7 @@ import java.io.IOException
  *  @changeLog
  *    ➡ V1.0 - クラス作成
  */
-class CallRecieve(val port: Int) {
+open class CallRecieve(val port: Int) {
 
     private var handle : (MockWebServer, RecordedRequest) -> MockResponse = { _, _ -> MockResponse().setBody("Hello World") }
     var mockServer : MockWebServer? = null

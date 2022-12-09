@@ -1,12 +1,21 @@
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.LoggerContext
+import com.jayway.jsonpath.JsonPath
+import com.jayway.jsonpath.spi.json.GsonJsonProvider
+import net.minidev.json.JSONArray
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.lang.ClassCastException
+import java.lang.NullPointerException
 import java.net.InetSocketAddress
 import java.net.Proxy
 import java.util.concurrent.TimeUnit
+import javax.print.DocFlavor.STRING
 
 /**
  *  REST APIにアクセスするラッパー
@@ -20,7 +29,7 @@ import java.util.concurrent.TimeUnit
  *    ➡ V1.3 - 認証付きProxyをサポート
  */
 class CallRequest(
-    var URL: String,
+    var URL: String? = null,
     var method: RequestMethod = RequestMethod.GET,
     var body: String = "",
     var mediaType: String = "text/plain"
@@ -83,6 +92,78 @@ class CallRequest(
         response.close()
         body?.close()
         return result
+    }
+
+    /**
+     * JsonPathを用いて、リスポンスの指定位置の値を取得します
+     */
+    fun <T> connectJsonPath(jsonPath: String, debug: Boolean = false) : T? {
+
+        // 取得
+        val json = connectString() ?: throw NullPointerException("リスポンスが空のため解析できません")
+
+        // 解析
+        return parseJsonPath(json, jsonPath, debug)
+    }
+
+    /**
+     * JsonPathを用いてJsonの指定位置の値を取得します
+     *
+     * @sample (https://github.com/json-path/JsonPath より参照)
+     * $.store.book[*].author  すべての書籍の著者
+     * $..author すべての著者の名前
+     * $.store.* 本も自転車も、ストアのすべてのもの
+     * $.store.price すべてのものの価格
+     * $..book[2] 3冊目の本
+     * $..book[-2] 最後から2冊目の本
+     * $..book[0,1] 最初の2冊の本
+     * $..book[:2] インデックス0（を含む）からインデックス2（を含む）までのすべてのブック
+     * $..book[1:2] インデックス1（を含む）からインデックス2（を含む）までのすべてのブック
+     * $..book[-2:]最後の2冊
+     * $..book[2:] インデックス2から最後までの全ての本 (含む)
+     * $..book[?(@.isbn)] ISBN番号の存在する、すべての本
+     * $.store.book[?(@.price < 10)] ストア内で10より安い本全て
+     * $.store.book[?(@.price <= $['expensive'])] 店頭にある、10より安い本全て 店内にある "高価" でないすべての本
+     * $..book[?(@.author =~ /.*REES/i)] 正規表現にマッチする全ての本 (大文字小文字は無視)
+     * $..* すべてを取得
+     * $..book.length() 本の数
+     *
+     * @operator (https://github.com/json-path/JsonPath より参照)
+     * $ クエリーの対象となるルート要素。これは、すべてのパス表現を開始する
+     * @ フィルタ述語で処理されている現在のノード
+     * * ワイルドカード。名前または数値が必要な場所で利用可能
+     * ..	ディープスキャン。名前が必要な場所ならどこでも利用可能です
+     * .<name> ドットで表記された子
+     * ['<name>' (, '<name>')] ブラケットで区切られた子または子供
+     * [<number> (, <number>)] 配列のインデックスまたはインデックス
+     * [start:end] 配列のスライス演算子
+     * [?(<expression>)] フィルタ式。式はBoolean型で評価されなければならない
+     *
+     * @expression (https://github.com/json-path/JsonPath より参照)
+     * == 左と右は等しい (ただし、1 は '1' と等しくない)
+     * != 左と右は等しくない
+     * < 左は右より小さい
+     * <= 左は右より小さいか等しい
+     * > 左は右より大きい
+     * >= 左は右より大きいか等しい
+     * =~ 左 は正規表現 [?(@.name =~ /foo.*?/i)] に一致する
+     * in 左 は 右に存在する [?(@.size in ['S', 'M'])]
+     * nin 左 は 右に存在しない
+     * subsetof 左 は 右の部分集合 [?(@.sizes subsetof ['S', 'M', 'L'])] である
+     * anyof 左 は 右と交差する [?(@.sizes anyof ['M', 'L']) ]
+     * noneof 左 は 右と交差しない [?(@.sizes noneof ['M', 'L'])]
+     * size 左(配列または文字列) のサイズが右と一致しなければならない
+     * empty 左(配列または文字列) は空でなければなりません
+     */
+    fun <T> parseJsonPath(json: String, jsonPath: String, debug: Boolean = false) : T {
+
+        // ロガー
+        val logContext = LoggerFactory.getILoggerFactory() as LoggerContext
+        val log = logContext.getLogger("com.jayway.jsonpath")
+        if (debug) log.level = Level.DEBUG else log.level = Level.WARN
+
+        // JsonPath 解析
+        return JsonPath.parse(json).read<T>(jsonPath)
     }
 
     /**
@@ -151,6 +232,7 @@ class CallRequest(
      * リスポンスを取得
      */
     private fun getResponse() : Response? {
+        if (URL == null) return null
 
         // リクエストボディー
         val mediaType = mediaType.toMediaTypeOrNull() ?: throw NotExistMediaType(mediaType)
@@ -160,7 +242,7 @@ class CallRequest(
         val request = Request.Builder().apply {
 
             // URL
-            this.url(URL)
+            this.url(URL!!)
 
             // ヘッダー
             headers.forEach { addHeader(it.key, it.value) }

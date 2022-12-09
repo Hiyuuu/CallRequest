@@ -32,11 +32,17 @@ repositories {
 }
 
 dependencies {
+    implementation fileTree(dir: './library/implement', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation "com.google.code.gson:gson:2.10"
-
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
     implementation 'com.squareup.okhttp3:mockwebserver:4.10.0'
+
+    implementation 'com.jayway.jsonpath:json-path:2.7.0'
+    implementation 'org.apache.logging.log4j:log4j-api:2.11.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.11.1'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+    compileOnly fileTree(dir: './library/compile', include: ['*.jar'])
 }
 
 group 'com.gmail.hiyu1576'

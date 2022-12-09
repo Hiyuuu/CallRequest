@@ -13,14 +13,14 @@ import java.io.IOException
  */
 class CallRecieve(val port: Int) {
 
-    private var handle : (MockWebServer, RecordedRequest) -> MockResponse = { _, _ -> MockResponse() }
+    private var handle : (MockWebServer, RecordedRequest) -> MockResponse = { _, _ -> MockResponse().setBody("Hello World") }
     var mockServer : MockWebServer? = null
 
     /**
      * サーバーを起動します
      */
     @Throws(IOException::class, InterruptedException::class)
-    fun Start(function: (MockWebServer, RecordedRequest) -> MockResponse = { _, _ -> MockResponse().setBody("Hello World") }) : CallRecieve {
+    fun Start(function: (MockWebServer, RecordedRequest) -> MockResponse = handle) : CallRecieve {
         Stop()
         handle = function
         val server = MockWebServer()
@@ -36,6 +36,11 @@ class CallRecieve(val port: Int) {
 
         return this
     }
+
+    /**
+     * リスポンス処理を変更します
+     */
+    fun ResponseHandle(mockResponse: MockResponse) : CallRecieve { handle = { _, _ -> mockResponse } ; return this }
 
     /**
      * リスポンス処理を変更します

@@ -10,11 +10,10 @@ version '1.0'
 group 'com.gmail.hiyu1576'
 
 shadowJar {
-    minimize() {
-        include 'com.jayway.jsonpath.*'
-    }
-    archiveName = "${buildDir}/libs/${this.name.toLowerCase()}-${this.version}.jar"
-
+//    minimize() {
+//        include 'com.jayway.jsonpath.*'
+//    }
+//    archiveName = "${buildDir}/libs/${this.name.toLowerCase()}-${this.version}.jar"
 }
 
 publishing {
@@ -31,8 +30,8 @@ publishing {
     publications {
         gpr(MavenPublication) {
             artifactId = "callrequest"
-//            from(components.java)
             artifact shadowJar
+//            from(components.java)
 //            artifact("$buildDir/libs/${this.name.toLowerCase()}-${this.version}.jar")
         }
     }

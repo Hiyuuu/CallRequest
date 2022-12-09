@@ -1,16 +1,15 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.7.21'
-    id 'com.github.johnrengelman.shadow' version '7.1.0'
     id 'maven-publish'
-
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
 version '3.0'
 group 'com.gmail.hiyu1576'
-jar.manifest.attributes "Main-Class": "CallTestKt"
+// jar.manifest.attributes "Main-Class": "CallTestKt"
 
-compileKotlin.kotlinOptions.jvmTarget = "1.8"
+// compileKotlin.kotlinOptions.jvmTarget = "1.8"
 shadowJar {
     classifier = ''
 }
@@ -28,7 +27,7 @@ publishing {
     }
     publications {
         gpr(MavenPublication) {
-            artifactId = "callrequest"
+            // artifactId = "callrequest"
             artifact shadowJar
 //            from(components.java)
         }

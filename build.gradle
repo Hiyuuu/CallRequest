@@ -5,7 +5,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
-version '3.0'
+version '3.1'
 group 'com.gmail.hiyu1576'
 // jar.manifest.attributes "Main-Class": "CallTestKt"
 

@@ -31,8 +31,9 @@ publishing {
     publications {
         gpr(MavenPublication) {
             //artifactId = "callrequest"
-            from(components.java)
-            artifact("$buildDir/libs/${this.name.toLowerCase()}-${this.version}.jar")
+//            from(components.java)
+            artifact shadowJar
+//            artifact("$buildDir/libs/${this.name.toLowerCase()}-${this.version}.jar")
         }
     }
 }

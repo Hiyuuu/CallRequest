@@ -279,10 +279,7 @@ open class CallRequest(
         }.build()
 
         // リスポンス 返す
-        runCatching { client.newCall(request).execute() }.apply {
-            this.exceptionOrNull()?.printStackTrace()
-            return this.getOrNull()
-        }
+        return client.newCall(request).execute()
     }
 
 }
